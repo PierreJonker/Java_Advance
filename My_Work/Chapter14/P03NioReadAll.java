@@ -20,7 +20,7 @@ public class P03NioReadAll {
         try{
             fileArr = Files.readAllLines(file);
             
-            System.out.println("\n=== Rosencrantz ===");
+            System.out.println("\\n=== Rosencrantz ===");
             fileArr.stream()
                 .filter(line -> line.contains("Ros."))
                 .forEach(line -> System.out.println(line));
