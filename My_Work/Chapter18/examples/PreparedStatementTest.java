@@ -13,9 +13,9 @@ import java.sql.SQLException;
 public class PreparedStatementTest {
 
     public static void main(String[] args) {
-        String url = "jdbc:derby://localhost:1527/EmployeeDB";
-        String username = "tiger";
-        String password = "scott";
+        String url = "jdbc:postgresql://localhost:5432/postgres";
+        String username = "postgres";
+        String password = "admin";
         String input = "";
         double searchValue;
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));

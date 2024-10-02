@@ -12,9 +12,9 @@ public class SimpleJDBCExample {
     public static void main(String[] args) {
         // Create the "url"
         // assume database server is running on the localhost
-        String url = "jdbc:derby://localhost:1527/EmployeeDB";
-        String username = "tiger";
-        String password = "scott";
+        String url = "jdbc:postgresql://localhost:5432/postgres";
+        String username = "postgres";
+        String password = "admin";
 
         // Create a simple query
         String query = "SELECT * FROM Employee";
@@ -39,7 +39,7 @@ public class SimpleJDBCExample {
             }
             
             // Add a record
-            query = "INSERT INTO Employee VALUES (400, 'Bill', 'Murray','1950-09-21', 150000)";
+            query = "INSERT INTO Employee VALUES (5, 'PJ', 'Joker','1950-09-21', 180000)";
             if (stmt.executeUpdate(query) != 1) {
                 System.out.println ("Failed to add a new employee record");
             }
