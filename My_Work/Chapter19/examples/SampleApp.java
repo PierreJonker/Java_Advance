@@ -16,12 +16,12 @@ public class SampleApp {
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     Locale usLocale = Locale.US;
     Locale frLocale = Locale.FRANCE;
-    Locale zhLocale = new Locale("zh", "CN");
-    Locale ruLocale = new Locale("ru", "RU");
+    Locale zhLocale = Locale.forLanguageTag("zh-CN"); // Updated to use forLanguageTag
+    Locale ruLocale = Locale.forLanguageTag("ru-RU"); // Updated to use forLanguageTag
     Locale currentLocale = Locale.getDefault();
-    ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", currentLocale);
+    ResourceBundle messages = ResourceBundle.getBundle("Chapter19.examples.MessagesBundle", currentLocale); // Updated base name
     NumberFormat currency;
-    Double money = new Double(1000000.00);
+    Double money = Double.valueOf(1000000.00); // Replaced deprecated constructor with valueOf()
     LocalDateTime today = LocalDateTime.now();
     DateTimeFormatter df;
 
@@ -61,33 +61,32 @@ public class SampleApp {
         pw.println("5. " + messages.getString("menu5"));
         pw.println("6. " + messages.getString("menu6"));
         pw.println("q. " + messages.getString("menuq"));
-        System.out.print(messages.getString("menucommand")+" ");
+        System.out.print(messages.getString("menucommand") + " ");
     }
 
     public void setEnglish() {
         currentLocale = usLocale;
-        messages = ResourceBundle.getBundle("MessagesBundle", currentLocale);
+        messages = ResourceBundle.getBundle("Chapter19.examples.MessagesBundle", currentLocale); // Updated base name
     }
 
     public void setFrench() {
         currentLocale = frLocale;
-        messages = ResourceBundle.getBundle("MessagesBundle", currentLocale);
+        messages = ResourceBundle.getBundle("Chapter19.examples.MessagesBundle", currentLocale); // Updated base name
     }
 
     public void setChinese() {
         currentLocale = zhLocale;
-        messages = ResourceBundle.getBundle("MessagesBundle", currentLocale);
+        messages = ResourceBundle.getBundle("Chapter19.examples.MessagesBundle", currentLocale); // Updated base name
     }
 
     public void setRussian() {
         currentLocale = ruLocale;
-        messages = ResourceBundle.getBundle("MessagesBundle", currentLocale);
+        messages = ResourceBundle.getBundle("Chapter19.examples.MessagesBundle", currentLocale); // Updated base name
     }
 
     public void showDate() {
         df = DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL).withLocale(currentLocale);
         pw.println(today.format(df) + " " + currentLocale.toString());
-
     }
 
     public void showMoney() {

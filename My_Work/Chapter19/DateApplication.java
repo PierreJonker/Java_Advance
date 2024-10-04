@@ -16,7 +16,7 @@ public class DateApplication {
     
     Locale ruLocale = new Locale("ru", "RU");
     Locale currentLocale = Locale.US;     
-    ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", Locale.US);
+    ResourceBundle messages = ResourceBundle.getBundle("Chapter19.MessagesBundle", Locale.US);
          
     LocalDateTime today = LocalDateTime.now();
     DateTimeFormatter df;
@@ -78,21 +78,21 @@ public class DateApplication {
     
     public void setEnglish(){
         currentLocale = Locale.US;    
-        messages = ResourceBundle.getBundle("MessagesBundle", currentLocale);        
+        messages = ResourceBundle.getBundle("Chapter19.MessagesBundle", currentLocale);
     }
     
     public void setFrench(){
         currentLocale = Locale.FRANCE;    
-        messages = ResourceBundle.getBundle("MessagesBundle", currentLocale);
+        messages = ResourceBundle.getBundle("Chapter19.MessagesBundle", currentLocale);
     }
     
     public void setChinese(){
         currentLocale = Locale.SIMPLIFIED_CHINESE;    
-        messages = ResourceBundle.getBundle("MessagesBundle", currentLocale);  
+        messages = ResourceBundle.getBundle("Chapter19.MessagesBundle", currentLocale);
     }
     
     public void setRussian(){
         currentLocale = ruLocale;    
-        this.messages = ResourceBundle.getBundle("MessagesBundle", currentLocale);        
+        this.messages = ResourceBundle.getBundle("Chapter19.MessagesBundle", currentLocale);
     }
 }
