@@ -3,104 +3,79 @@ package Chapter_4;
 import java.sql.*;
 import java.text.NumberFormat;
 
-public class ListMovies
-{
+public class ListMovies {
     private static Connection con;
 
     public static void main(String[] args) {
         NumberFormat cf = NumberFormat.getCurrencyInstance();
         ResultSet movies = getMovies();
-        try
-        {
-            while (movies.next())
-            {
-                Movie m = getMovie(movies);
-                String msg = Integer.toString(m.year);
-                msg += ": " + m.title;
-                msg += " (" + cf.format(m.price) + ")";
-                System.out.println(msg);
-            }
 
-            try
-            {
-                con.close();
-                System.out.println("Connection closed.");
-            } catch (Exception e) {
-                System.out.println("Error closing database.");
+        if (movies != null) {
+            try {
+                while (movies.next()) {
+                    Movie m = getMovie(movies);
+                    String msg = m.year + ": " + m.title + " (" + cf.format(m.price) + ")";
+                    System.out.println(msg);
+                }
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            } finally {
+                try {
+                    if (con != null && !con.isClosed()) {
+                        con.close();
+                        System.out.println("Connection closed.");
+                    }
+                } catch (SQLException e) {
+                    System.out.println("Error closing database connection: " + e.getMessage());
+                }
             }
-
-        }
-        catch (SQLException e)
-        {
-            System.out.println(e.getMessage());
         }
     }
 
-    private static ResultSet getMovies()
-    {
+    private static ResultSet getMovies() {
         con = getConnection();
-        try
-        {
+        try {
             Statement s = con.createStatement();
             String select = "SELECT * FROM movie ORDER BY year";
-            ResultSet rows;
-            rows = s.executeQuery(select);
-            return rows;
-        }
-        catch (SQLException e)
-        {
-            System.out.println(e.getMessage());
+            return s.executeQuery(select);
+        } catch (SQLException e) {
+            System.out.println("Error retrieving movies: " + e.getMessage());
         }
         return null;
     }
 
-    private static Connection getConnection()
-    {
-        Connection con = null;
-        try
-        {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            String url = "jdbc:mysql://localhost/Movies";
-            String user = "root";
-            String pw = "password";
-            con = DriverManager.getConnection(url, user, pw);
-        }
-        catch (ClassNotFoundException e)
-        {
-            System.out.println(e.getMessage());
+    private static Connection getConnection() {
+        try {
+            // Removed the Class.forName as it's unnecessary for modern JDBC
+            String url = "jdbc:postgresql://localhost:5432/movies";
+            String user = "postgres";  // Adjust the PostgreSQL credentials
+            String pw = "admin";       // Adjust the PostgreSQL credentials
+            return DriverManager.getConnection(url, user, pw);
+        } catch (SQLException e) {
+            System.out.println("Connection error: " + e.getMessage());
             System.exit(0);
         }
-        catch (SQLException e)
-        {
-            System.out.println(e.getMessage());
-            System.exit(0);
-        }
-        return con;
+        return null;
     }
 
-    private static Movie getMovie(ResultSet movies)
-    {
-        try
-        {
-            String title = movies.getString("Title");
-            int year = movies.getInt("Year");
-            double price = movies.getDouble("Price");
+    private static Movie getMovie(ResultSet movies) {
+        try {
+            String title = movies.getString("title");  // Column names should match your table schema
+            int year = movies.getInt("year");
+            double price = movies.getDouble("price");
             return new Movie(title, year, price);
-        }
-        catch (SQLException e)
-        {
-            System.out.println(e.getMessage());
+        } catch (SQLException e) {
+            System.out.println("Error retrieving movie: " + e.getMessage());
         }
         return null;
     }
 
-    private static class Movie
-    {
+    private static class Movie {
         public String title;
         public int year;
         public double price;
-        public Movie(String title, int year, double price)
-        {
+
+        public Movie(String title, int year, double price) {
             this.title = title;
             this.year = year;
             this.price = price;

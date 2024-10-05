@@ -1,63 +1,60 @@
 package Chapter_4;
 
-import javax.swing.plaf.nimbus.State;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class SQLUpdate
-{
+public class SQLUpdate {
+
     public static void main(String[] args) {
         loanMovie(3, "Drinkwater", "Mark");
     }
 
-    private static void loanMovie(int id, String lastName, String firstName)
-    {
+    private static void loanMovie(int id, String lastName, String firstName) {
         Connection con = getConnection();
-        try
-        {
-            Statement stmt = con.createStatement();
-            String insert = "INSERT INTO FRIEND " +
-                            "(lastname,firstname,movieid) " +
-                            "VALUES (" + "\"" + lastName + "\", \""
-                            + firstName + "\", " + id + ")";
+        if (con != null) {
+            try {
+                // Use PreparedStatement to avoid SQL injection and ensure proper syntax
+                String insert = "INSERT INTO FRIEND (lastname, firstname, movieid) VALUES (?, ?, ?)";
+                PreparedStatement pstmt = con.prepareStatement(insert);
 
+                // Set values for the placeholders (?)
+                pstmt.setString(1, lastName);
+                pstmt.setString(2, firstName);
+                pstmt.setInt(3, id);
 
-            int result = stmt.executeUpdate(insert);
+                int result = pstmt.executeUpdate();
 
-            if (result == 1) {
-                System.out.println("Loan recorded");
-            } else {
-                System.out.println("Loan not recorded.");
+                if (result == 1) {
+                    System.out.println("Loan recorded");
+                } else {
+                    System.out.println("Loan not recorded.");
+                }
+            } catch (SQLException e) {
+                System.out.println("SQL Error: " + e.getMessage());
+            } finally {
+                try {
+                    con.close();
+                } catch (SQLException e) {
+                    System.out.println("Error closing connection: " + e.getMessage());
+                }
             }
-
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            System.exit(0);
         }
     }
 
-    private static Connection getConnection()
-    {
+    private static Connection getConnection() {
         Connection con = null;
-        try
-        {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            String url = "jdbc:mysql://localhost/Movies";
-            String user = "root";
-            String pw = "password";
+        try {
+            // PostgreSQL connection URL and credentials
+            String url = "jdbc:postgresql://localhost:5432/movies";
+            String user = "postgres";
+            String pw = "admin";
             con = DriverManager.getConnection(url, user, pw);
-        }
-        catch (ClassNotFoundException e)
-        {
-            System.out.println(e.getMessage());
-            System.exit(0);
-        }
-        catch (SQLException e)
-        {
-            System.out.println(e.getMessage());
-            System.exit(0);
+            System.out.println("Connected to the database successfully!");
+        } catch (SQLException e) {
+            System.out.println("Connection error: " + e.getMessage());
         }
         return con;
     }
