@@ -25,7 +25,7 @@ public class FileScanInteractive {
         return instanceCount;
     }
 
-    // Main method
+    // Test method
     public static void main(String[] args) {
         if (args.length < 1) {
             System.out.println("Usage: java ScanFileInteractive <file to search>");

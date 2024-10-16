@@ -1,0 +1,18 @@
+{
+	"folders": [
+		{
+			"name": "Recipe_App",
+			"path": "../../../Recipe_App"
+		},
+		{
+			"name": "Fit_Track_Hub",
+			"path": "../../../Fit_Track_Hub"
+		},
+		{
+			"path": "../Java_Beginner"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "MERN_Stack"
+	}
+}
